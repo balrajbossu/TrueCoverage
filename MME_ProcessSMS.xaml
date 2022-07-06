@@ -1,0 +1,736 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="MME_ProcessSMS" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:sd1="clr-namespace:System.Drawing;assembly=System.Drawing" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_InProgress_Folder" Type="InArgument(x:String)" />
+    <x:Property Name="dt_ExcelSMS" Type="InArgument(sd:DataTable)" />
+  </x:Members>
+  <this:MME_ProcessSMS.dt_ExcelSMS>
+    <InArgument x:TypeArguments="sd:DataTable" />
+  </this:MME_ProcessSMS.dt_ExcelSMS>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1420,4742</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>MME_ProcessSMS_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="31">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>UiPath.UIAutomationCore.Contracts</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>UiPath.DataTableUtilities</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="27">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="MME_ProcessSMS" sap:VirtualizedContainerService.HintSize="1430,4677" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Boolean" Name="bool_PageStillLoading" />
+      <Variable x:TypeArguments="x:Int32" Default="1" Name="int_ImgIndex" />
+      <Variable x:TypeArguments="x:Boolean" Name="bool_CompletedLoad" />
+      <Variable x:TypeArguments="x:Boolean" Name="bool_NoDataAvailable" />
+      <Variable x:TypeArguments="x:String" Name="in_Number" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="1388,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Entering Phone number and selecting Necessary Options for SMS Logs&quot;]" />
+    <Sequence DisplayName="Pre-Requisites" sap:VirtualizedContainerService.HintSize="1388,4363" sap2010:WorkflowViewState.IdRef="Sequence_2">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <ui:Click AlterIfDisabled="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateClick="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click_SMS_Logs" sap:VirtualizedContainerService.HintSize="1346,106" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT">
+        <ui:Click.CursorPosition>
+          <ui:CursorPosition Position="Center">
+            <ui:CursorPosition.OffsetX>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetX>
+            <ui:CursorPosition.OffsetY>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetY>
+          </ui:CursorPosition>
+        </ui:Click.CursorPosition>
+        <ui:Click.Target>
+          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="8c8b63e9-9b41-43a1-b5f4-aa93beddf4c5" InformativeScreenshot="6a066f8fd8d787291df095b9fb26d8cd" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl aaname=' SMS Logs' parentid='page-wrapper' tag='A' /&gt;">
+            <ui:Target.TimeoutMS>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:Target.TimeoutMS>
+            <ui:Target.WaitForReady>
+              <InArgument x:TypeArguments="ui:WaitForReady" />
+            </ui:Target.WaitForReady>
+          </ui:Target>
+        </ui:Click.Target>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:Click>
+      <ui:Activate DelayBefore="{x:Null}" DelayMS="{x:Null}" DisplayName="Activate 'I'" sap:VirtualizedContainerService.HintSize="1346,51" sap2010:WorkflowViewState.IdRef="Activate_1">
+        <ui:Activate.Target>
+          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="9ef88f94-9a43-4a60-b429-236f752b3706" InformativeScreenshot="b7daa40cd716c81d88ad50ce53dd6621" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl aria-role='button' tag='I' /&gt;">
+            <ui:Target.TimeoutMS>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:Target.TimeoutMS>
+            <ui:Target.WaitForReady>
+              <InArgument x:TypeArguments="ui:WaitForReady" />
+            </ui:Target.WaitForReady>
+          </ui:Target>
+        </ui:Activate.Target>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:Activate>
+      <ui:Click AlterIfDisabled="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateClick="{x:Null}" ClickType="CLICK_SINGLE" DelayBefore="2000" DisplayName="Click_RecentSMS" sap:VirtualizedContainerService.HintSize="1346,51" sap2010:WorkflowViewState.IdRef="Click_2" KeyModifiers="None" MouseButton="BTN_LEFT">
+        <ui:Click.CursorPosition>
+          <ui:CursorPosition Position="Center">
+            <ui:CursorPosition.OffsetX>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetX>
+            <ui:CursorPosition.OffsetY>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetY>
+          </ui:CursorPosition>
+        </ui:Click.CursorPosition>
+        <ui:Click.Target>
+          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="fe457bcb-665c-4fa4-a9e5-91394cbf0c94" InformativeScreenshot="20e65049a82e9518750111d520be2d3d" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl tag='H5' aaname=' &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;Recent SMS &amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;' parentclass='accordion-container grid-style-height' /&gt;" WaitForReady="COMPLETE">
+            <ui:Target.TimeoutMS>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:Target.TimeoutMS>
+          </ui:Target>
+        </ui:Click.Target>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:Click>
+      <ui:Click AlterIfDisabled="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateClick="{x:Null}" ClickType="CLICK_SINGLE" DelayBefore="1500" DisplayName="Click_All_Logs" sap:VirtualizedContainerService.HintSize="1346,51" sap2010:WorkflowViewState.IdRef="Click_3" KeyModifiers="None" MouseButton="BTN_LEFT">
+        <ui:Click.CursorPosition>
+          <ui:CursorPosition Position="Center">
+            <ui:CursorPosition.OffsetX>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetX>
+            <ui:CursorPosition.OffsetY>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetY>
+          </ui:CursorPosition>
+        </ui:Click.CursorPosition>
+        <ui:Click.Target>
+          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="a89cde94-6563-49b0-ac03-c3a1a5206a78" InformativeScreenshot="b136e02f55dbf79612d36a662bdb899d" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl aaname='Filter By' parentid='page-wrapper' tag='A' /&gt;&lt;nav up='3' /&gt;&lt;webctrl tag='MD-RADIO-BUTTON' idx='1' /&gt;">
+            <ui:Target.TimeoutMS>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:Target.TimeoutMS>
+            <ui:Target.WaitForReady>
+              <InArgument x:TypeArguments="ui:WaitForReady" />
+            </ui:Target.WaitForReady>
+          </ui:Target>
+        </ui:Click.Target>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:Click>
+      <ui:ImageFound Found="{x:Null}" DisplayName="Image Exists" sap:VirtualizedContainerService.HintSize="1346,51" sap2010:WorkflowViewState.IdRef="ImageFound_3">
+        <ui:ImageFound.Image>
+          <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" Profile="Basic" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAB0AAAAsCAYAAACZtbMHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADASURBVFhH7dixDoIwFIVhXrkDI3FnZeBJ2PsQfQENtokmGtuh41UMbGfohYsMXpMvMebQP7Eb1XUcaeKc213O+aui+TP9mFLajUbhWIpG4ViKRuFYikbhWIpG4VgKKxpsT82pKdbbAM9hRS9DS8aYYu1whuewoun1pHsI5L0vcKNHjPAcXlQIK/pHdzqLn7sqhZ5fFd2KFQ22oxr8jVhNnd7pmuhWGoVjKRqFYykahWMpGoVjKcdHD3ljtnz5nUxvOCGeyY3vqi0AAAAASUVORK5CYII=" />
+        </ui:ImageFound.Image>
+        <ui:ImageFound.Target>
+          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="0e4075b0-9a60-4a5d-9ff7-f1d7627b22db" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;">
+            <ui:Target.TimeoutMS>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:Target.TimeoutMS>
+            <ui:Target.WaitForReady>
+              <InArgument x:TypeArguments="ui:WaitForReady" />
+            </ui:Target.WaitForReady>
+          </ui:Target>
+        </ui:ImageFound.Target>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:ImageFound>
+      <ui:Click AlterIfDisabled="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateClick="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click_Options" sap:VirtualizedContainerService.HintSize="1346,51" sap2010:WorkflowViewState.IdRef="Click_8" KeyModifiers="None" MouseButton="BTN_LEFT">
+        <ui:Click.CursorPosition>
+          <ui:CursorPosition Position="Center">
+            <ui:CursorPosition.OffsetX>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetX>
+            <ui:CursorPosition.OffsetY>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetY>
+          </ui:CursorPosition>
+        </ui:Click.CursorPosition>
+        <ui:Click.Target>
+          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="56081890-532a-41b5-af7b-7f51944635ca" InformativeScreenshot="bb1c5c808ed8e96e534413619fe721bb" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl aria-role='button' tag='DIV' /&gt;">
+            <ui:Target.TimeoutMS>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:Target.TimeoutMS>
+            <ui:Target.WaitForReady>
+              <InArgument x:TypeArguments="ui:WaitForReady" />
+            </ui:Target.WaitForReady>
+          </ui:Target>
+        </ui:Click.Target>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:Click>
+      <ui:Click AlterIfDisabled="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateClick="{x:Null}" ClickType="CLICK_SINGLE" ContinueOnError="True" DisplayName="Uncheck_AgentName" sap:VirtualizedContainerService.HintSize="1346,51" sap2010:WorkflowViewState.IdRef="Click_9" KeyModifiers="None" MouseButton="BTN_LEFT">
+        <ui:Click.CursorPosition>
+          <ui:CursorPosition Position="Center">
+            <ui:CursorPosition.OffsetX>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetX>
+            <ui:CursorPosition.OffsetY>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetY>
+          </ui:CursorPosition>
+        </ui:Click.CursorPosition>
+        <ui:Click.Target>
+          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="2f3f19c9-5a02-4318-a478-7b40ea4ef302" InformativeScreenshot="8fa3933e33160b832b7e11863a4277e5" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl parentid='menuitem-10' tag='I' /&gt;">
+            <ui:Target.TimeoutMS>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:Target.TimeoutMS>
+            <ui:Target.WaitForReady>
+              <InArgument x:TypeArguments="ui:WaitForReady" />
+            </ui:Target.WaitForReady>
+          </ui:Target>
+        </ui:Click.Target>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:Click>
+      <ui:UiElementExists DisplayName="Checkif_PageCompleted_Loading" Exists="[bool_CompletedLoad]" sap:VirtualizedContainerService.HintSize="1346,51" sap2010:WorkflowViewState.IdRef="UiElementExists_6">
+        <ui:UiElementExists.Target>
+          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="13445554-3d2f-4ae5-b92e-7e7ea922e8f9" InformativeScreenshot="50afa8d68168b68a24269e66524b1b3f" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl parentid='*-0-uiGrid*' tag='DIV' /&gt;" TimeoutMS="45000" WaitForReady="COMPLETE" />
+        </ui:UiElementExists.Target>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:UiElementExists>
+      <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[dt_ExcelSMS]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="1346,3488" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+        <ui:ForEachRow.Body>
+          <ActivityAction x:TypeArguments="sd:DataRow">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="1312,3368" sap2010:WorkflowViewState.IdRef="Sequence_14">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:Boolean" Name="bool_LoadingSquare" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="1270,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[in_Number]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[row("Contact").ToString]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Folder" sap:VirtualizedContainerService.HintSize="1270,79" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[in_InProgress_Folder+&quot;\SMSLogs\&quot;+in_Number]">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:CreateDirectory>
+              <ui:TypeInto AlterIfDisabled="{x:Null}" ClickBeforeTyping="{x:Null}" DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateType="{x:Null}" Activate="True" DisplayName="Enter_Number" EmptyField="True" sap:VirtualizedContainerService.HintSize="1270,51" sap2010:WorkflowViewState.IdRef="TypeInto_1" Text="[in_Number]">
+                <ui:TypeInto.Target>
+                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="a223eafd-e069-4fea-8316-199bb8b21444" InformativeScreenshot="698d622fa59b95b403a867d80b963549" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl tag='INPUT' /&gt;">
+                    <ui:Target.TimeoutMS>
+                      <InArgument x:TypeArguments="x:Int32" />
+                    </ui:Target.TimeoutMS>
+                    <ui:Target.WaitForReady>
+                      <InArgument x:TypeArguments="ui:WaitForReady" />
+                    </ui:Target.WaitForReady>
+                  </ui:Target>
+                </ui:TypeInto.Target>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:TypeInto>
+              <ui:SendHotkey ClickBeforeTyping="{x:Null}" DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" EmptyField="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" DisplayName="Click_Enter" sap:VirtualizedContainerService.HintSize="1270,51" sap2010:WorkflowViewState.IdRef="SendHotkey_1" Key="enter" KeyModifiers="None" SpecialKey="True">
+                <ui:SendHotkey.Target>
+                  <ui:Target Element="{x:Null}" Id="a79ace82-f127-4198-b4d1-2d263c56f7d9" InformativeScreenshot="111f3c9479921e517b9a23729f2f4093" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl tag='MD-INPUT-CONTAINER' /&gt;">
+                    <ui:Target.ClippingRegion>
+                      <ui:Region Rectangle="2, 3, 205, 30" />
+                    </ui:Target.ClippingRegion>
+                    <ui:Target.TimeoutMS>
+                      <InArgument x:TypeArguments="x:Int32" />
+                    </ui:Target.TimeoutMS>
+                    <ui:Target.WaitForReady>
+                      <InArgument x:TypeArguments="ui:WaitForReady" />
+                    </ui:Target.WaitForReady>
+                  </ui:Target>
+                </ui:SendHotkey.Target>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:SendHotkey>
+              <Assign sap:VirtualizedContainerService.HintSize="1270,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Boolean">[bool_LoadingSquare]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:InterruptibleWhile Condition="[bool_LoadingSquare]" DisplayName="While" sap:VirtualizedContainerService.HintSize="1270,525" sap2010:WorkflowViewState.IdRef="InterruptibleWhile_2">
+                <ui:InterruptibleWhile.Body>
+                  <Sequence sap:VirtualizedContainerService.HintSize="376,360" sap2010:WorkflowViewState.IdRef="Sequence_17">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_7">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Boolean">[bool_LoadingSquare]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                    <ui:ImageFound DisplayName="Image Exists" Found="[bool_LoadingSquare]" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="ImageFound_5">
+                      <ui:ImageFound.Image>
+                        <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" Profile="Basic" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAYAAABX5MJvAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIiSURBVFhH7VZNSwJRFJ1+hT+gX9BvCDdtihZtW9SqZbVvE21rGUIgERFhVLiLviyCKIoU2ghFZlqECxEVbUZv77zhjm96b2ggSgkPHGTumbn3vOfc+8aiHkBvmWhVC2Tnj8gunusUceiMWC5Lyw/3RkJjNG2bKrVaIKEDngkUqh5NUi01oxFx6ECr3aaBZJysxKqR0HAPgEKPL3l6KhY0Ig4d6JgQK0bB+sWcRsShAygQOdgia39NFlSJGDTVBAo+v71qRLxvom/iexO90B09MSe6CZ8JbGMQVZh0lSpMOpPhmYg9liiSSFMkmdEp4tABPDyU2pcvoInQuIDMuXNrzininNMzsZJ9J2v9mqztW50iDh1wRAEUQyeYCI1NyJwbV+acIs45/SZCPIACbEJtT9kxfRP/z0SIF1M1YeKPTIRtUXTHr7UogIeDqMKkq1Rh0pkMnwmCgHnedmf6X8EzgcPk9OqEFo6TFM/e0HzmUjuYbMfx7jUdSEw+mOSCzlLU3tvV2NrckBq1nI6JUrlMg4cJ90j++sKJGP7v8oebHIXCHNFUqVBzeoqa0WFyRqI+ImbPzRI1Gh0T5UrJNSGKmloPGpuo1oM/VnJvRZ8JFGqMjZI9Me6jjC0tdtcEdqPrJrydqNf7OyE1dJDPBDpA/WhVGbY7QNUEugOrRlFm4E5gdZgHmA9MvuZZwf0fNCeQA7++OZG+c+eBidDUOdE9EH0CnpJRqx+S7j8AAAAASUVORK5CYII=" />
+                      </ui:ImageFound.Image>
+                      <ui:ImageFound.Target>
+                        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="d0fd909f-5db8-42e8-b468-f8ad97c9ffe8" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;" TimeoutMS="6000">
+                          <ui:Target.WaitForReady>
+                            <InArgument x:TypeArguments="ui:WaitForReady" />
+                          </ui:Target.WaitForReady>
+                        </ui:Target>
+                      </ui:ImageFound.Target>
+                    </ui:ImageFound>
+                  </Sequence>
+                </ui:InterruptibleWhile.Body>
+              </ui:InterruptibleWhile>
+              <ui:UiElementExists DisplayName="Checkif_PageCompleted_Loading" Exists="[bool_CompletedLoad]" sap:VirtualizedContainerService.HintSize="1270,106" sap2010:WorkflowViewState.IdRef="UiElementExists_8">
+                <ui:UiElementExists.Target>
+                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="13445554-3d2f-4ae5-b92e-7e7ea922e8f9" InformativeScreenshot="50afa8d68168b68a24269e66524b1b3f" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl parentid='*-0-uiGrid*' tag='DIV' /&gt;" TimeoutMS="1200" WaitForReady="INTERACTIVE" />
+                </ui:UiElementExists.Target>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:UiElementExists>
+              <If Condition="[bool_CompletedLoad]" sap:VirtualizedContainerService.HintSize="1270,2064" sap2010:WorkflowViewState.IdRef="If_2">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <If.Then>
+                  <Sequence sap:VirtualizedContainerService.HintSize="699,1906" sap2010:WorkflowViewState.IdRef="Sequence_16">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign sap:VirtualizedContainerService.HintSize="657,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Object">[row("SMS Logs")]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Object">["Found"]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="657,91" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Trace" Message="[&quot;SMS Logs Page Completed Loading  for &quot;+in_Number]" />
+                    <ui:InterruptibleWhile Condition="[bool_CompletedLoad]" DisplayName="While" sap:VirtualizedContainerService.HintSize="657,1583" sap2010:WorkflowViewState.IdRef="InterruptibleWhile_1">
+                      <ui:InterruptibleWhile.Body>
+                        <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="621,1418" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                          <Sequence.Variables>
+                            <Variable x:TypeArguments="ui:Image" Name="Screenshot" />
+                            <Variable x:TypeArguments="x:String" Name="g" />
+                            <Variable x:TypeArguments="sd1:Rectangle" Name="rr" />
+                            <Variable x:TypeArguments="x:Int32" Default="1" Name="int_PageIndex" />
+                            <Variable x:TypeArguments="x:Boolean" Name="bool_NextPage" />
+                          </Sequence.Variables>
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <ui:Click AlterIfDisabled="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateClick="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click" sap:VirtualizedContainerService.HintSize="579,106" sap2010:WorkflowViewState.IdRef="Click_7" KeyModifiers="None" MouseButton="BTN_LEFT">
+                            <ui:Click.CursorPosition>
+                              <ui:CursorPosition Position="Center">
+                                <ui:CursorPosition.OffsetX>
+                                  <InArgument x:TypeArguments="x:Int32" />
+                                </ui:CursorPosition.OffsetX>
+                                <ui:CursorPosition.OffsetY>
+                                  <InArgument x:TypeArguments="x:Int32" />
+                                </ui:CursorPosition.OffsetY>
+                              </ui:CursorPosition>
+                            </ui:Click.CursorPosition>
+                            <ui:Click.Target>
+                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="5d821905-cbaa-4f81-b001-6c2dbd956bfe" InformativeScreenshot="cdc6e7a3b7938d0522a02f91b3fa8934" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl parentid='page-wrapper' tag='UL' /&gt;">
+                                <ui:Target.TimeoutMS>
+                                  <InArgument x:TypeArguments="x:Int32" />
+                                </ui:Target.TimeoutMS>
+                                <ui:Target.WaitForReady>
+                                  <InArgument x:TypeArguments="ui:WaitForReady" />
+                                </ui:Target.WaitForReady>
+                              </ui:Target>
+                            </ui:Click.Target>
+                          </ui:Click>
+                          <ui:TypeInto AlterIfDisabled="{x:Null}" ClickBeforeTyping="{x:Null}" DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" EmptyField="{x:Null}" SendWindowMessages="{x:Null}" SimulateType="{x:Null}" Activate="True" DisplayName="Clicking_Endand_Up" sap:VirtualizedContainerService.HintSize="579,134" sap2010:WorkflowViewState.IdRef="TypeInto_2" Text="%[k(end)][k(up)][k(up)][k(up)]">
+                            <ui:TypeInto.Target>
+                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="4727d8be-1062-41c4-a652-06a9ef800269" InformativeScreenshot="f250fc2c94430f4b8f81836f98be8d78" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl parentid='page-wrapper' tag='DIV' /&gt;">
+                                <ui:Target.TimeoutMS>
+                                  <InArgument x:TypeArguments="x:Int32" />
+                                </ui:Target.TimeoutMS>
+                                <ui:Target.WaitForReady>
+                                  <InArgument x:TypeArguments="ui:WaitForReady" />
+                                </ui:Target.WaitForReady>
+                              </ui:Target>
+                            </ui:TypeInto.Target>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </ui:TypeInto>
+                          <ui:TakeScreenshot WaitBefore="{x:Null}" DisplayName="Taking_Screenshot" sap:VirtualizedContainerService.HintSize="579,51" sap2010:WorkflowViewState.IdRef="TakeScreenshot_1" Screenshot="[Screenshot]">
+                            <ui:TakeScreenshot.Target>
+                              <ui:Target Element="{x:Null}" Id="77632607-c73a-4821-b05d-80fcc5baf92a" InformativeScreenshot="6bc53e43d2b6a4c47cb2eefb88d45604" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl aria-role='grid' tag='DIV' /&gt;">
+                                <ui:Target.ClippingRegion>
+                                  <ui:Region Rectangle="0, 5, 750, 453" />
+                                </ui:Target.ClippingRegion>
+                                <ui:Target.TimeoutMS>
+                                  <InArgument x:TypeArguments="x:Int32" />
+                                </ui:Target.TimeoutMS>
+                                <ui:Target.WaitForReady>
+                                  <InArgument x:TypeArguments="ui:WaitForReady" />
+                                </ui:Target.WaitForReady>
+                              </ui:Target>
+                            </ui:TakeScreenshot.Target>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </ui:TakeScreenshot>
+                          <ui:SaveImage DisplayName="Save Image" FileName="[in_InProgress_Folder+&quot;\SMSLogs\&quot;+in_Number+&quot;\Image&quot;+int_ImgIndex.ToString+&quot;.png&quot;]" sap:VirtualizedContainerService.HintSize="579,132" sap2010:WorkflowViewState.IdRef="SaveImage_1" Image="[Screenshot]">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </ui:SaveImage>
+                          <ui:UiElementExists DisplayName="Checking_For_NextPage" Exists="[bool_NextPage]" sap:VirtualizedContainerService.HintSize="579,106" sap2010:WorkflowViewState.IdRef="UiElementExists_2">
+                            <ui:UiElementExists.Target>
+                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="4dfbe71b-2868-42e0-bdbd-0e07c5f07088" InformativeScreenshot="0990abd7f68529e34663c27b717ecaa6" Selector="[&quot;&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl aaname='&quot;+(int_ImgIndex+1).ToString+&quot;' parentid='pagination-wrapper' tag='A' /&gt;&quot;]" TimeoutMS="1200">
+                                <ui:Target.WaitForReady>
+                                  <InArgument x:TypeArguments="ui:WaitForReady" />
+                                </ui:Target.WaitForReady>
+                              </ui:Target>
+                            </ui:UiElementExists.Target>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </ui:UiElementExists>
+                          <If sap2010:Annotation.AnnotationText="Condition if next page exist" Condition="[bool_NextPage]" sap:VirtualizedContainerService.HintSize="579,294" sap2010:WorkflowViewState.IdRef="If_1">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <If.Then>
+                              <ui:Click AlterIfDisabled="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateClick="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click 'A'" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="Click_6" KeyModifiers="None" MouseButton="BTN_LEFT">
+                                <ui:Click.CursorPosition>
+                                  <ui:CursorPosition Position="Center">
+                                    <ui:CursorPosition.OffsetX>
+                                      <InArgument x:TypeArguments="x:Int32" />
+                                    </ui:CursorPosition.OffsetX>
+                                    <ui:CursorPosition.OffsetY>
+                                      <InArgument x:TypeArguments="x:Int32" />
+                                    </ui:CursorPosition.OffsetY>
+                                  </ui:CursorPosition>
+                                </ui:Click.CursorPosition>
+                                <ui:Click.Target>
+                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="604ddfe5-5177-4f71-8a8d-9a03ca345243" InformativeScreenshot="e425f2a5a92a3240e371134e265ac0d6" Selector="[&quot;&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl aaname='&quot;+(int_ImgIndex+1).ToString+&quot;' parentid='pagination-wrapper' tag='A' /&gt;&quot;]">
+                                    <ui:Target.TimeoutMS>
+                                      <InArgument x:TypeArguments="x:Int32" />
+                                    </ui:Target.TimeoutMS>
+                                    <ui:Target.WaitForReady>
+                                      <InArgument x:TypeArguments="ui:WaitForReady" />
+                                    </ui:Target.WaitForReady>
+                                  </ui:Target>
+                                </ui:Click.Target>
+                              </ui:Click>
+                            </If.Then>
+                            <If.Else>
+                              <ui:Break sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Break_1" />
+                            </If.Else>
+                          </If>
+                          <Assign sap2010:Annotation.AnnotationText="Incrementing for selector and saving multiple Images&#xA;" sap:VirtualizedContainerService.HintSize="579,117" sap2010:WorkflowViewState.IdRef="Assign_1">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Int32">[int_ImgIndex]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Int32">[int_ImgIndex+1]</InArgument>
+                            </Assign.Value>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </Assign>
+                          <ui:UiElementExists DisplayName="Checkif_PageCompleted_Loading" Exists="[bool_CompletedLoad]" sap:VirtualizedContainerService.HintSize="579,106" sap2010:WorkflowViewState.IdRef="UiElementExists_3">
+                            <ui:UiElementExists.Target>
+                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="13445554-3d2f-4ae5-b92e-7e7ea922e8f9" InformativeScreenshot="50afa8d68168b68a24269e66524b1b3f" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl parentid='*-0-uiGrid*' tag='DIV' /&gt;" TimeoutMS="45000" WaitForReady="INTERACTIVE" />
+                            </ui:UiElementExists.Target>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </ui:UiElementExists>
+                        </Sequence>
+                      </ui:InterruptibleWhile.Body>
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                    </ui:InterruptibleWhile>
+                  </Sequence>
+                </If.Then>
+                <If.Else>
+                  <Sequence sap:VirtualizedContainerService.HintSize="526,814" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:SendHotkey ClickBeforeTyping="{x:Null}" DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" EmptyField="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" DisplayName="Send Hotkey" sap:VirtualizedContainerService.HintSize="484,152" sap2010:WorkflowViewState.IdRef="SendHotkey_2" Key="pgdn" KeyModifiers="None" SpecialKey="True">
+                      <ui:SendHotkey.Target>
+                        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="e3f8f4f4-d2fd-4fc9-81dc-0307ba7eacb3" InformativeScreenshot="fe83b0886a8aefd8d2b30a59f7462ebe" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl parentid='page-wrapper' tag='DIV' /&gt;">
+                          <ui:Target.TimeoutMS>
+                            <InArgument x:TypeArguments="x:Int32" />
+                          </ui:Target.TimeoutMS>
+                          <ui:Target.WaitForReady>
+                            <InArgument x:TypeArguments="ui:WaitForReady" />
+                          </ui:Target.WaitForReady>
+                        </ui:Target>
+                      </ui:SendHotkey.Target>
+                    </ui:SendHotkey>
+                    <ui:ImageFound DisplayName="NoDataAvaiilable" Found="[bool_NoDataAvailable]" sap:VirtualizedContainerService.HintSize="484,51" sap2010:WorkflowViewState.IdRef="ImageFound_2">
+                      <ui:ImageFound.Image>
+                        <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" Profile="Basic" TargetImageBase64="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" />
+                      </ui:ImageFound.Image>
+                      <ui:ImageFound.Target>
+                        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="44a7ff0a-982d-4699-8874-2c4c27dab6d6" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;" TimeoutMS="50000">
+                          <ui:Target.WaitForReady>
+                            <InArgument x:TypeArguments="ui:WaitForReady" />
+                          </ui:Target.WaitForReady>
+                        </ui:Target>
+                      </ui:ImageFound.Target>
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                    </ui:ImageFound>
+                    <If Condition="[bool_NoDataAvailable]" sap:VirtualizedContainerService.HintSize="484,439" sap2010:WorkflowViewState.IdRef="If_3">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <If.Then>
+                        <Sequence sap:VirtualizedContainerService.HintSize="304,252" sap2010:WorkflowViewState.IdRef="Sequence_15">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Boolean">[bool_CompletedLoad]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Object">[row("SMS Logs")]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Object">["Not Available"]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                        </Sequence>
+                      </If.Then>
+                      <If.Else>
+                        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_12">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                        </Sequence>
+                      </If.Else>
+                    </If>
+                  </Sequence>
+                </If.Else>
+              </If>
+            </Sequence>
+          </ActivityAction>
+        </ui:ForEachRow.Body>
+      </ui:ForEachRow>
+    </Sequence>
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="1388,51" sap2010:WorkflowViewState.IdRef="CommentOut_4">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="884,244" sap2010:WorkflowViewState.IdRef="Sequence_10">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Parallel sap:VirtualizedContainerService.HintSize="842,152" sap2010:WorkflowViewState.IdRef="Parallel_1">
+            <ui:ImageFound DisplayName="Image Exists 'chrome.exe Benefitalign'" Found="[bool_NoDataAvailable]" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="ImageFound_1">
+              <ui:ImageFound.Image>
+                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" Profile="Basic" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAQIAAAAsCAYAAACOnraiAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAp6SURBVHhe7ZyJchQ3EIbz/u+QEHKSE0glKUIOyGEIGIMJ922w8Y3t9eJrfUz0DdtmLEsaaUbj4ui/agq8O6NutVp/d0ua/aBQKBTvPZQIFAqFEoFCoVAiUCgUBkoECoVCiUChUCgRKBQKAyUChUKhRKBQKJQInFgf7Bbf/jdf/HLvRbG9uzf8VPGmY7q3WUwsbRQ7jjG7Nfuy+PDSdDG1sjn8JC9erA2Kz6/OFiNPVoafNAP6oSf6HiWiiUAUPHlzvni5tTP8NA65jHRUqBLBYGd3+KniTcbS+nbxhfGxjy5PF88NIdgQIph8S4jg5swbTgRcF5/2ipRAqUSg6Bob27vFj7cXixPjc4YUBsNPX0OJIIxGRHB8dKZ4urwx/KYeSgRuYA/sgn0U3UKJIIxkImCC0OGUEkGJwA0hgkUlgs6hRBBGMhH8YzqKkvw/tkRQInBDieDooEQQRjIR0NEtU4+dMZMktkRQInBDieDooEQQRiMiADgvHY8pEVKMRLt/PFwq70ceq8DfmUk5/rxfTtAcWBvslNmMyDg2Ol38cGuhePxivdx6iiECMiFs8tuD17pyfXlttrgwsVL0Ng/bhK1I2pR7XdeIx0ZrxsbY4Psb86W+3AsRV/VuiyYyZvtbxSdXZoq/Hy9HZYds7zGmyLGBfZDz853F4tOxmVI+935zfa4Ym1wNjr/YlnFz3RdDBG1sbPs4PnbpWa/4enxuvx/48b35tWA7sUQw2Nkr+0SbtM0zyKqzkw+NiQDcHBq3rkSIIQKyjL+MM9EpjI8z0C6fiTFxDgakDZ4tb+47Ge3S/oWJXjnYDP5PRi5kFCICtqpwFtqgX+ceLpe6VtvhYqCqZsEB+Ix7uRjEj01f5Xmuh4sH+4ddr07199ukfeRwL88JCfF530E+MWgjA/swVtirv7k9/NQN5EAY2H/+5cEsiC0/tv+q44J8fEacned8GehBIjhshxAR5LBx1cefGR3Rlevs/aWyHf4Vv6MdX/CMIQKxFTY5ZQIxusbayYdWRIATxJQIdURAOxiK9s8/Wi42LEbbMwM1s7pVDjKy7i+sDb9JAxOciI0uDNYeDVdAREAPJjn3uIgAR/jaRCi+f2JIyW4DcA+Egq6hCIQ9aCdUGhChsMs5kyWhnw3k35lbK2X9anRvcgCqrQyiHM/XkXRpOzPJyaKqUXGuPyidl/FlnB0m3Sdnxg8ittGGCHLYWHycyUgfCZJ25N/e3S1GTcRmsuJnriBTRwQEMvSgn7bfYDcOVbGFij2xayxaEQFAGQwQKhHqiEAGAubcdRhZsGwc4CvTSTq6shGOPjYYFByQCEx66kOVlFxEgEPwHc4fArritLbTV1FHBOyNQ0qnbi7UpnuXTRpK33CEFOSQIX39PdBX8GBh3Wm7iyaixejO99yHHjaaEkEuG4uPM8nLTNBjBsxD6ch99x0+FCKCNaMfeqKvLzMBMiexR2xgaE0EoK5ECBFB35AHg3fSdC5mO5KogxFdzhDCgklFYcnQxBTIvS4iiEWdY4I6IkhBXSTJAZ8MzPmnyeQgA0jBBSFiomVdCeEDExV7usalTUYQi5CNxcdjfEaIk3vtiRqSQR/w/ZjymPnB2s1cf2v4SRhZiGDTsKqkwq4SIUQET0x0pt1rz1eHn4QBgwsrpiyKiCPElBUhh4uFOGZoondBBC4b50JIhiwC+jIlcf5Xi4pxUcqGjItrsh8lEbj6X5f1ViG6nhifPZTZ+ogAP2QthtKDhcg6UELQzm3T7xhkIQIgdR6TlBSmipCRSAtxINf5cB84y5A6gZAdy5BKBG6EZGAznJQ+21EOSDSbNA7aFO8KEYBRE7Fdfu8jgt7GTkkcdeWXIFWfbEQApNa/ZJUIIaWaTGqMlDKoOAl1f6ycGCKge6x8j5h6j3tZbUYn+wrJHEnoO1nXXRNtiQo845LFNRI58C60lUE6SjCwdwQkmtXV4fgMfkaZwVoQE8UlvysiaNP/1Inn08dHBNJ+VY+YayRSn6xEUC0RqszvM1JM1HQhld1T5dQRQc/UuPQTHXB8tpggwacmPZaLOo6tnZBM7FGnE5OD/iKHiUGb/xqiZZuxKu/q1GrSwFeRSwYr/iym2WWerLkQBX3gPALlHu1TQrB9iE5V+Q9MWcd3uYkgR/+PigjIuliLi73s7WgfshIBcJUIISO9bRkBC5rskNDH0OGQGPLBHnU64TA4J231AjslsePjQi4ZEvlP31oog4LgmiFJ7GVnCgL6zwRnN8i1rSvoqjTI0f+jIoIm4xuD7EQA7BIh1AmiBFFkJnGN4LOxNPJAdo41AtJfnKZu5TYHEcgCG9lHdWK50JQIcsvAwatbbLQJMUAQHBqzIbsJEEXd2HRBBLn6nzpRfWtjPiKQ31uIXSNIRSdEgEGrJULISLJrcH368JFTF5ruGsj+f5tdg4EZgDN3Xzmb6+BJFTmIQFZ+b8zU26YpEeSWIRNLtndl79+3m0DWiD2xq6sMq6ILIsjV/xQiEF1Tdg22jG2YU/Sv6fZrCJ0QAaiWCJCBz0htzhGk7EKlnCNY3dwpF6tsIpDDJz5nqwKioE9tiEDIy3YKF8TRY8dHkFsGtiVqldtcxgaME8QAQbggkc62tQsy2XISQa7+i26sF4UOxQEhS1effUQACJaxuqaiMyIAUiKcNmRAWu579sDJwoANIQomIkbE8CnAQXmZyXfWQYB8Tn6hjz1Q4uS+02UCnJLyhTbqiCBUFsniWx15cR82SR0f0IUMzhQcM20ycSAEdgF8ZwekdAiRBSAb4Dg78nMSQa7+CxHE+hfBLPVkoRxvR49Fz3qLgO1GFgoDXTqATolASgSeCz3LZGMxD+NwD29W2WBVmUFmm45DEk3OpDAhMSIDZjsE4KAG581xYnRxMbYcnEEX1wTHmaUsQk6ICCQaQYQuIJvaGnlXJlcPOSrOz6lOMh3k4NAp4wO6kCFZ3nFD/thyYim8niKRDrvZWSHaMAkJAAQT1oZyEkGu/gsR0F90dE1C/Jp1M2Th7641kxARAHnXAFmU1ZaI8m+CFAuvKT8e1CkRACkR6p613z48awaVDIFneA2V52nnkTFww4NpJVicwYi053r7kO/YpsKhXETA4I5NvXpxhIuIh44MrEQMUl0Ig6wAx/FFfGF42mHLinaIntVFK1JndJH+I4f7KDuwE8+eN+ko44PuTRaTupBBSUB7ZYngmJhVYGP6zf3Vt/+YoDJWEAHyGRNXbd2UCECO/gsRQGriH9IWfsy//I0MCM+3xiTzLJT+y9uH3IfPyZua/Cs+SEme8j5O50QAJPWPeZZa3vV7BGxBuQa4CezfI7BlcPmIQECGIqvdtIHD4MBkK/IMg8l3oUHFCXF4OZDED3Dab18SSbAhOqIr94kDYC+IEcdC55iJ50JuGZJyx67lcAspNbbAlsjHtvzNW55MPNqBXNHPPqHYhghA2/4LETDW3MszPGv7GAeWQiQaQwQAffE1CWBVe3HmoW6dwkY0ESgUincXSgQKhUKJQKFQKBEoFAoDJQKFQqFEoFAolAgUCoWBEoFCoVAiUCgUSgQKhcJAiUCheO9RFP8DmUu00mgiMK0AAAAASUVORK5CYII=" />
+              </ui:ImageFound.Image>
+              <ui:ImageFound.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="44a7ff0a-982d-4699-8874-2c4c27dab6d6" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;" TimeoutMS="50000">
+                  <ui:Target.WaitForReady>
+                    <InArgument x:TypeArguments="ui:WaitForReady" />
+                  </ui:Target.WaitForReady>
+                </ui:Target>
+              </ui:ImageFound.Target>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:ImageFound>
+            <ui:UiElementExists DisplayName="Checkif_PageCompleted_Loading" Exists="[bool_CompletedLoad]" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="UiElementExists_7">
+              <ui:UiElementExists.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="13445554-3d2f-4ae5-b92e-7e7ea922e8f9" InformativeScreenshot="50afa8d68168b68a24269e66524b1b3f" Selector="&lt;html app='chrome.exe' title='Benefitalign :: MME' /&gt;&lt;webctrl parentid='*-0-uiGrid*' tag='DIV' /&gt;" TimeoutMS="100000" WaitForReady="INTERACTIVE" />
+              </ui:UiElementExists.Target>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:UiElementExists>
+          </Parallel>
+        </Sequence>
+      </ui:CommentOut.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:CommentOut>
+  </Sequence>
+</Activity>
